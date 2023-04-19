@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+    .card {
+  border-radius: 0;
+  margin-top: 35%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.form-check-label {
+  font-weight: 800;
+}
+
+label{
+    font-weight: 800;
+}
+
+.card-header{
+    background-color:rgb(23, 123, 238);
+}
+
+.btn-primary {
+  background-color: rgb(23, 123, 238);
+  border-color: #6c757d;
+}
+
+.btn-primary:hover {
+  background-color: #343a40;
+  border-color: #343a40;
+}
+ 
+h3{
+    font-weight: 800;
+    font-size: 40px;
+    color: white;
+}
+
+body{
+    background-image: url(images/forest-3622519_960_720.jpg);
+    background-size: cover;
+    opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card ">
+          <div class="card-header">
+            <h3 class="text-center">LOGIN</h3>
+          </div>
+          <div class="card-body">
+            <form name="login">
+              <div class="form-group">
+                <label for="username">Username / Email</label>
+                <input type="text" id="email" name="email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password"  name="password" class="form-control" required>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember Me</label>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+              <div id="loginErr" style="color:red"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+     let form= document.forms['login'];
+  form.addEventListener('submit', (e)=>{
+     e.preventDefault()
+    let email = form['email'].value.trim()
+    let password= form['password'].value.trim()
+    const errors={}
+    if(email ==""){
+        errors['emailErr'] = "Your email is required"
+      }
+      if(password == ""){
+        errors['passwordErr'] = "Your password is required"
+      }
+        if(Object.keys(errors).length == 0){
+            if(localStorage.getItem('users')){
+             const users = JSON.parse(localStorage.getItem('users'))
+             const auth = users.filter((value, index)=>{
+                return (value.email == email && value.password == password)
+             })
+               if(auth.length == 0){
+                 document.querySelector('#loginErr').innerHTML="Either Password or Email was not correct"
+
+               }
+               else{
+                alert("Login Successful")
+                setTimeout(()=>{
+                  window.location ='landingPage.html'
+                }, 1000)
+               }
+            }
+        }else{
+           
+            let displayErrs=""
+            for(let error in errors){
+                displayErrs += errors[error] + "<br>"
+            }
+            document.querySelector('#loginErr').innerHTML=displayErrs
+        }
+    })
+        
+  </script>
+</body>
+</html>

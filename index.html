@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Signup Registration Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    .container {
+        padding: 30px;
+    }
+
+    h2{
+      text-align: center;
+      padding: 10px 5px;
+      font-weight: 800;
+      font-family:Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .form-container {
+      background-color: #f2f2f2;
+      padding: 25px 20px;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+    }
+    #imgForm{
+      position: relative;
+      left: 3%;
+    }
+    
+    .form-group label {
+      font-weight: bold;
+    }
+
+    #signupErr{
+      color: red;
+    }
+
+    .btn-primary{
+      margin-left: 180px;
+      margin-top: 20px;
+    }
+
+    body{
+        background-image: url(images/forest-3622519_960_720.jpg) ;
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.9;
+       }
+
+       @media(max-width:768px){
+        .image-container{
+          display: none;
+        }
+       }
+
+  </style>
+</head>
+<body>
+<div id="bgImage">  
+<div class="container">
+  <h2>User Signup Page</h2>
+  <div class="row">
+    <div class="col-md-6 col-sm-12 col-12 image-container">
+      <div id="imgForm">
+      <img src="images/laptop.jpg" alt="placeholder image">
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-12 form-container">
+      <form name="register">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name">
+          <div id="nameErr" class= "text-danger" ></div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your email" name="email">
+          <div id="emailErr" class= "text-danger" ></div>
+
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" name="phone">
+          <div id="phoneErr" class= "text-danger" ></div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter your password" name="password">
+          <div id="passwordErr" class= "text-danger" ></div>
+        </div>
+          <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" class="form-control" id="confirmPassword" placeholder="Enter your password Again" name="confirmPassword">
+          <div id="confirmPasswordErr" class= "text-danger" ></div>
+        </div>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <textarea class="form-control" id="address" placeholder="Enter your address" name="address"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  let form= document.forms['register'];
+  form.addEventListener('submit', (e)=>{
+     e.preventDefault()
+    let name = form['name'].value.trim()
+    let email = form['email'].value.trim()
+    let phone = form['phone'].value.trim()
+    let password= form['password'].value.trim()
+    let confirmPassword = form['confirmPassword'].value.trim()
+    let address = form['address'].value.trim()
+    let  passwordErr='';
+    let nameErr = "";
+    let phoneErr = "";
+    let emailErr = "";
+    let confirmPasswordErr = "";
+     if(name == ""){
+          nameErr = "Name is required"
+         document.getElementById('nameErr').innerHTML= nameErr
+     }
+      if(email == ""){
+        emailErr = "Email is required"
+         document.getElementById('emailErr').innerHTML= emailErr 
+       }
+
+       if(phone == ""){
+         phoneErr = "Phone Number is required"
+         document.getElementById('phoneErr').innerHTML= phoneErr 
+       }
+        
+       else if (phone.length != 11){
+        phoneErr = "Phone Number is not correct"
+        document.getElementById('phoneErr').innerHTML=phoneErr
+
+       }
+       
+       else if (phone.startsWith('080') != true &&
+                phone.startsWith('081') != true &&
+                phone.startsWith('090') != true &&
+                phone.startsWith('070') != true &&
+                phone.startsWith('091') != true) {
+                phoneErr = "Invalid Phone Code"
+                document.getElementById('phoneErr').innerHTML=phoneErr
+        }
+
+       
+       if(password== ''){
+         passwordErr= 'Password is required'
+        }
+        
+        else if(password.length < 6 ){
+            passwordErr='Password Length is weak'  
+            document.getElementById('passwordErr').innerHTML=passwordErr
+         }
+         
+       if(confirmPassword == ''){
+        confirmPasswordErr= 'Please type your password again'
+        document.getElementById('confirmPasswordErr').innerHTML=confirmPasswordErr
+        }
+        else if(confirmPassword != password ){
+          confirmPasswordErr='Password is not the same'  
+            document.getElementById('confirmPasswordErr').innerHTML=confirmPasswordErr       
+         }         
+  
+      if(nameErr.length == 0 && confirmPasswordErr.length == 0 && emailErr.length == 0 && phoneErr.length == 0 && passwordErr.length == 0){
+              alert("Signup Successful")
+              setTimeout(()=>{
+                  window.location ='login.html'
+                }, 1500)
+    const user ={id:Date.now(), name:name, email:email, phone:phone, password:password, address:address}
+     let users = []
+     if(! localStorage.getItem('users')){
+    users.push(user)
+   }else{
+     users= JSON.parse(localStorage.getItem('users'))
+     users.push(user)     
+   }
+      localStorage.setItem('users', JSON.stringify(users))
+}
+
+   }
+  )
+  
+
+
+</script>
+</body>
+</html>
